@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="picton_blue_100">#DFF1FF</color>
     <color name="picton_blue_500">#069EF1</color>
+    <color name="light_grayish_blue">#E2E8F0</color>
+    <color name="gray_600">#757575</color>
+    <color name="light_blue">#E8F0FF</color>
+    <color name="blue_700">#1987FF</color>
 </resources>

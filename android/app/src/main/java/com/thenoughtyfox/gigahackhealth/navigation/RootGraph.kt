@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.thenoughtyfox.gigahackhealth.ui.auth.AuthPage
 import com.thenoughtyfox.gigahackhealth.utils.PreferenceManager
 import kotlinx.serialization.Serializable
 
@@ -26,11 +27,7 @@ interface RootNavDestinations {
 @Composable
 fun RootGraph(preferenceManager: PreferenceManager) {
     val navController = rememberNavController()
-    val startDestination = if (preferenceManager.isPassOnboarding) {
-        RootNavDestinations.Auth
-    } else {
-        RootNavDestinations.OnBoarding
-    }
+    val startDestination = RootNavDestinations.Auth
 
     CompositionLocalProvider(LocalRootNavigator provides navController) {
         NavHost(
@@ -49,8 +46,12 @@ fun RootGraph(preferenceManager: PreferenceManager) {
 //                })
             }
 
-            composable<RootNavDestinations.Auth> { }
-            composable<RootNavDestinations.Main> { MainGraph()}
+            composable<RootNavDestinations.Auth> {
+                AuthPage(onButtonClicked = {
+                    navController.navigate(RootNavDestinations.OnBoarding)
+                })
+            }
+            composable<RootNavDestinations.Main> { MainGraph() }
         }
     }
 }
