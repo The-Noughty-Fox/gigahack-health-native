@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GigahackHealth</string>
+    <string name="appointment_menu">Appointment</string>
+    <string name="home_menu">Home</string>
+    <string name="chat_menu">Chat</string>
+    <string name="profile_menu">Profile</string>
 </resources>

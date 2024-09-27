@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import com.thenoughtyfox.gigahackhealth.utils.PreferenceManager
 import kotlinx.serialization.Serializable
 
-
 interface RootNavDestinations {
     @Serializable
     data object OnBoarding : RootNavDestinations
