@@ -1,7 +1,9 @@
 package com.thenoughtyfox.gigahackhealth
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,8 +60,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        requestPermissions.launch(healthPermissions)
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.light(Color.WHITE, Color.WHITE))
+     //   requestPermissions.launch(healthPermissions)
         setStatusBarFontColor(isDarkMode = false)
         setContent {
             GigahackHealthTheme {

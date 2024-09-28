@@ -222,7 +222,6 @@ private fun PhoneNumberView(modifier: Modifier = Modifier) {
             }
         )
     }
-
 }
 
 @Preview

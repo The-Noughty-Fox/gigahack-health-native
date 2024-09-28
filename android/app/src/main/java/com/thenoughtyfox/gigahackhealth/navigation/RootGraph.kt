@@ -54,6 +54,5 @@ fun RootGraph(preferenceManager: PreferenceManager) {
     }
 }
 
-
 val LocalRootNavigator =
     staticCompositionLocalOf<NavHostController> { error("Error! navController wasn't initialized!") }

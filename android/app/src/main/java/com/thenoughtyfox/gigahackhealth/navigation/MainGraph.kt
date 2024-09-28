@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.thenoughtyfox.gigahackhealth.ui.appointment.AppointmentPage
 import com.thenoughtyfox.gigahackhealth.ui.profile.ProfilePage
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavBar
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavData
@@ -105,12 +106,10 @@ fun MainGraph() {
                         .fillMaxSize()
                         .padding(padding)
                 ) {
-                    composable<MainNavDestinations.Appointment> { }
+                    composable<MainNavDestinations.Appointment> { AppointmentGraph() }
                     composable<MainNavDestinations.Home> { }
                     composable<MainNavDestinations.Chat> { }
-                    composable<MainNavDestinations.Profile> {
-                        ProfilePage()
-                    }
+                    composable<MainNavDestinations.Profile> { ProfilePage() }
                 }
             }
         )

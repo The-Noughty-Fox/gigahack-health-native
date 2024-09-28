@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -68,7 +67,7 @@ fun ProfilePage() {
                 Program(it)
             }
 
-            Page.entries.forEach {
+            ProfilePage.entries.forEach {
                 Page(it)
             }
 
@@ -308,7 +307,7 @@ private fun ProgramItem(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Page(page: Page) {
+private fun Page(profilePage: ProfilePage) {
     ConstraintLayout(
         modifier = Modifier
             .padding(top = 16.dp)
@@ -317,7 +316,7 @@ private fun Page(page: Page) {
             .padding(16.dp)
     ) {
         val (icon, title, button) = createRefs()
-        Image(painter = painterResource(page.icon), contentDescription = null,
+        Image(painter = painterResource(profilePage.icon), contentDescription = null,
             modifier = Modifier
                 .size(32.dp)
                 .constrainAs(icon) {
@@ -326,7 +325,7 @@ private fun Page(page: Page) {
                     bottom.linkTo(parent.bottom)
                 })
 
-        Text(text = page.title,
+        Text(text = profilePage.title,
             style = TextStyle(fontSize = 14.sp, color = Color.Black),
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(icon.top)
@@ -334,7 +333,7 @@ private fun Page(page: Page) {
                 start.linkTo(icon.end, margin = 8.dp)
             })
 
-        if (page != Page.LOGOUT) {
+        if (profilePage != ProfilePage.LOGOUT) {
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
@@ -369,7 +368,7 @@ private enum class Program(val icon: Int, val title: String, val desc: String) {
     )
 }
 
-private enum class Page(val icon: Int, val title: String) {
+private enum class ProfilePage(val icon: Int, val title: String) {
     MEDICINE(icon = R.drawable.ic_medecine, title = "Medicine & Supplements"),
     PERSONAL_INFO(icon = R.drawable.ic_profile, title = "Personal Information"),
     PROFILE_SETTINGS(icon = R.drawable.ic_settings, title = "Profile Settings"),

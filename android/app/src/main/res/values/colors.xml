@@ -16,4 +16,5 @@
     <color name="blue_700">#1987FF</color>
     <color name="gray_100">#FAFAFA</color>
     <color name="green_transparent">#1A52D22E</color>
+    <color name="shadow_blue">#6A788E</color>
 </resources>
