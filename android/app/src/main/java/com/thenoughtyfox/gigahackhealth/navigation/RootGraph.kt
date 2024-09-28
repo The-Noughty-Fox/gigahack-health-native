@@ -38,7 +38,9 @@ fun RootGraph(preferenceManager: PreferenceManager) {
         ) {
             composable<RootNavDestinations.OnBoarding> {
                 OnBoardingController(
-
+                    onFinishPress = {
+                        navController.navigate(RootNavDestinations.Main)
+                    }
                 )
             }
 

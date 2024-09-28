@@ -14,4 +14,6 @@
     <color name="gray_700">#8C8A8A</color>
     <color name="light_blue">#E8F0FF</color>
     <color name="blue_700">#1987FF</color>
+    <color name="gray_100">#FAFAFA</color>
+    <color name="green_transparent">#1A52D22E</color>
 </resources>

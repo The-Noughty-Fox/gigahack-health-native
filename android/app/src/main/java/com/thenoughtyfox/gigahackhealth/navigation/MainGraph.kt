@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.thenoughtyfox.gigahackhealth.ui.profile.ProfilePage
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavBar
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavData
 import com.thenoughtyfox.gigahackhealth.utils.navigateSingleTop
@@ -107,7 +108,9 @@ fun MainGraph() {
                     composable<MainNavDestinations.Appointment> { }
                     composable<MainNavDestinations.Home> { }
                     composable<MainNavDestinations.Chat> { }
-                    composable<MainNavDestinations.Profile> { }
+                    composable<MainNavDestinations.Profile> {
+                        ProfilePage()
+                    }
                 }
             }
         )
