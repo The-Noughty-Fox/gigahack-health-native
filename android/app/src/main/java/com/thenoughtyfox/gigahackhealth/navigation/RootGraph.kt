@@ -40,14 +40,6 @@ fun RootGraph(preferenceManager: PreferenceManager) {
                 OnBoardingController(
 
                 )
-//                OnBoardingController(onFinishPress = {
-//                    preferenceManager.isPassOnboarding = true
-//                    navController.navigate(Web) {
-//                        popUpTo(OnBoarding) {
-//                            inclusive = true
-//                        }
-//                    }
-//                })
             }
 
             composable<RootNavDestinations.Auth> {

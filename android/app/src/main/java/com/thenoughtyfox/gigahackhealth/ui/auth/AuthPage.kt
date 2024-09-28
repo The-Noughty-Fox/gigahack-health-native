@@ -60,31 +60,22 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.ic_placeholder_logo),
-                contentDescription = "Logo",
-                modifier = Modifier.size(110.dp)
-            )
-
-            Text(
-                text = "LOGO",
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_logo_invitro),
+            contentDescription = "Logo",
+            modifier = Modifier.size(110.dp)
+        )
 
         Text(
-            text = "Welcome text",
+            text = "Invitro Diagnostics",
             style = TextStyle(
                 color = Color.Black,
-                fontSize = 32.sp,
-                fontWeight = FontWeight(600)
+                fontSize = 24.sp
             ),
             modifier = Modifier.padding(top = 24.dp)
         )
 
-        CountrySelectView(modifier = Modifier.padding(top = 24.dp))
-        PhoneNumberView()
+        PhoneNumberView(modifier = Modifier.padding(top = 80.dp))
 
         Box(
             modifier = Modifier
@@ -98,7 +89,7 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
                 .clickable { onButtonClicked() }
         ) {
             Text(
-                text = "Continue",
+                text = "Continuă",
                 style = TextStyle(
                     color = colorResource(R.color.blue_700),
                     fontSize = 16.sp,
@@ -112,7 +103,7 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
 
         Row(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 50.dp)
+                .padding(horizontal = 16.dp, vertical = 34.dp)
                 .fillMaxWidth()
         ) {
             HorizontalDivider(
@@ -141,7 +132,6 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
 
         Row(
             modifier = Modifier
-                .padding(top = 16.dp)
                 .fillMaxWidth()
                 .background(
                     color = colorResource(R.color.light_blue),
@@ -155,48 +145,15 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.ic_facebook),
-                contentDescription = "Google",
+                painter = painterResource(id = R.drawable.ic_email),
+                contentDescription = "mail",
                 modifier = Modifier
                     .size(24.dp)
                     .padding(end = 8.dp)
             )
 
             Text(
-                text = "Sign in with Facebook",
-                style = TextStyle(
-                    color = colorResource(R.color.blue_700),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(700)
-                ),
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(R.color.light_blue),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { onButtonClicked() }
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_google),
-                contentDescription = "Google",
-                modifier = Modifier
-                    .size(24.dp)
-                    .padding(end = 8.dp)
-            )
-
-            Text(
-                text = "Sign in with Google",
+                text = "Conectați-vă cu emailul",
                 style = TextStyle(
                     color = colorResource(R.color.blue_700),
                     fontSize = 16.sp,
@@ -206,66 +163,20 @@ fun AuthPage(onButtonClicked: () -> Unit = {}) {
         }
 
         Text(
-            text = "Already han an account? Log in",
+            text = "Aveți deja un cont? Conectați-vă",
             style = TextStyle(
                 color = colorResource(R.color.black),
                 fontSize = 14.sp,
             ),
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        Text(
-            text = "SKIP",
-            style = TextStyle(
-                color = colorResource(R.color.black),
-                fontSize = 14.sp,
-            ),
-            modifier = Modifier
-                .padding(top = 52.dp)
-                .clickable { onButtonClicked() }
+            modifier = Modifier.padding(top = 16.dp)
         )
     }
 }
 
 @Composable
-private fun CountrySelectView(modifier: Modifier = Modifier) {
+private fun PhoneNumberView(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
-            .fillMaxWidth()
-            .height(48.dp),
-        border = BorderStroke(1.dp, colorResource(R.color.light_grayish_blue)),
-        shape = RoundedCornerShape(8.dp),
-        color = Color.White,
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("\uD83C\uDDFA\uD83C\uDDF8")
-            Text(
-                text = "United States (+1)",
-                style = TextStyle(
-                    color = colorResource(R.color.gray_600),
-                    fontSize = 14.sp
-                ),
-                modifier = Modifier.padding(start = 8.dp)
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(R.drawable.ic_arrow_down),
-                contentDescription = "Arrow down",
-                tint = colorResource(R.color.gray_600),
-            )
-        }
-    }
-}
-
-@Composable
-private fun PhoneNumberView() {
-    Surface(
-        modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
         border = BorderStroke(1.dp, colorResource(R.color.light_grayish_blue)),
