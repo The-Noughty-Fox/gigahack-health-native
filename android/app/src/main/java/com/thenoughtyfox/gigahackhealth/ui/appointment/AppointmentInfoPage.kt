@@ -53,10 +53,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.thenoughtyfox.gigahackhealth.R
 
 @Composable
-fun AppointmentListPage(selectedType: SelectedType = SelectedType.CATEGORY) {
+fun AppointmentInfoPage(isConsult: Boolean = false, onClickItem: () -> Unit = {}) {
 
     val outState = rememberScrollState()
-    val type by remember { mutableStateOf(selectedType) }
+    var selectedType by remember { mutableStateOf(SelectedType.CATEGORY) }
 
     Column(
         modifier = Modifier
@@ -88,7 +88,7 @@ fun AppointmentListPage(selectedType: SelectedType = SelectedType.CATEGORY) {
             )
         }
 
-        val title = when (type) {
+        val title = when (selectedType) {
             SelectedType.CATEGORY -> "Selecteaza categorie"
             SelectedType.DOCTORS -> "Selecteaza doctor"
             SelectedType.CONSULT -> "Selecteaza consultatie"
@@ -105,11 +105,26 @@ fun AppointmentListPage(selectedType: SelectedType = SelectedType.CATEGORY) {
             modifier = Modifier.padding(top = 16.dp)
         )
 
-        when (type) {
-            SelectedType.CATEGORY -> Categories(outState, onClickItem = {})
-            SelectedType.DOCTORS -> Doctors(onClickItem = {})
-            SelectedType.CONSULT -> Consult(onClickItem = {})
-            SelectedType.ANALYSIS -> Analysis(onClickItem = {})
+        when (selectedType) {
+            SelectedType.CATEGORY -> Categories(outState, onClickItem = {
+                selectedType = if (isConsult) {
+                    SelectedType.CONSULT
+                } else {
+                    SelectedType.DOCTORS
+                }
+            })
+
+            SelectedType.DOCTORS -> Doctors(onClickItem = {
+                selectedType = SelectedType.CONSULT
+            })
+
+            SelectedType.CONSULT -> Consult(onClickItem = {
+                onClickItem.invoke()
+            })
+
+            SelectedType.ANALYSIS -> Analysis(onClickItem = {
+                onClickItem.invoke()
+            })
         }
     }
 }
@@ -435,5 +450,5 @@ enum class SelectedType {
 @Preview
 @Composable
 fun PreviewAppointmentListPage() {
-    AppointmentListPage()
+    AppointmentInfoPage()
 }

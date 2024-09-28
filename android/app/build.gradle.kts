@@ -96,7 +96,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     //ConstraintLayout
-    implementation (libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.constraintlayout.compose)
 
     //Coroutines
     implementation(libs.coroutines.core)
@@ -129,6 +129,9 @@ dependencies {
 
     //Health
     implementation(libs.androidx.connect.client)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+    implementation("com.kizitonwose.calendar:compose:2.6.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
