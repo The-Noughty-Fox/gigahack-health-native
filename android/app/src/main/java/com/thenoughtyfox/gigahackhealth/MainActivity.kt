@@ -15,6 +15,7 @@ import com.thenoughtyfox.gigahackhealth.service.HealthConnect
 import com.thenoughtyfox.gigahackhealth.service.healthPermissions
 import com.thenoughtyfox.gigahackhealth.ui.theme.GigahackHealthTheme
 import com.thenoughtyfox.gigahackhealth.utils.PreferenceManager
+import com.thenoughtyfox.gigahackhealth.utils.setStatusBarFontColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         requestPermissions.launch(healthPermissions)
+        setStatusBarFontColor(isDarkMode = false)
         setContent {
             GigahackHealthTheme {
                 RootGraph(preferenceManager)

@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thenoughtyfox.gigahackhealth.ui.auth.AuthPage
+import com.thenoughtyfox.gigahackhealth.ui.onboarding.OnBoardingController
 import com.thenoughtyfox.gigahackhealth.utils.PreferenceManager
 import kotlinx.serialization.Serializable
 
@@ -36,6 +37,9 @@ fun RootGraph(preferenceManager: PreferenceManager) {
             modifier = Modifier.fillMaxSize()
         ) {
             composable<RootNavDestinations.OnBoarding> {
+                OnBoardingController(
+
+                )
 //                OnBoardingController(onFinishPress = {
 //                    preferenceManager.isPassOnboarding = true
 //                    navController.navigate(Web) {
