@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/lis/Projects/invitro-hack/invitro-hack.xcworkspace",
+	"build_root": "/Users/lis/Library/Developer/Xcode/DerivedData/invitro-hack-arslmiienlmwoxaklnnqoatdsiif",
+	"scheme": "invitro-hack-Workspace",
+	"kind": "xcode"
+}

@@ -1,0 +1,3827 @@
+x-generator: NSwag v14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))
+openapi: 3.0.0
+info:
+  title: DocDream REST API
+  description: REST API for integrating DocDream with external systems
+  version: 1.0.0
+servers:
+  - url: https://demo.docdream.com:8001
+paths:
+  /api/appointments:
+    get:
+      tags:
+        - Appointments
+      summary: Get list of appointments. Either date range or patient Id is required
+      operationId: Appointment_GetAppointments
+      parameters:
+        - name: startDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 1
+        - name: endDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 2
+        - name: patientId
+          in: query
+          description: Patient filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 3
+        - name: executorId
+          in: query
+          description: Executor filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 4
+        - name: referrerId
+          in: query
+          description: Referrer filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 5
+        - name: unitId
+          in: query
+          description: Unit filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 6
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentApiInfo'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Appointments
+      summary: Create appointment. Appointment is created in confirmed (Planned) state. Venue is automatic.
+      operationId: Appointment_PlanAppointment
+      requestBody:
+        x-name: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentPlanningRequest'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentApiInfo'
+      security:
+        - Api-Key: []
+  /api/appointments/{appointmentId}:
+    get:
+      tags:
+        - Appointments
+      summary: Get appointment by id
+      operationId: Appointment_GetAppointmentInfo
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentOrderApiInfo'
+      security:
+        - Api-Key: []
+    patch:
+      tags:
+        - Appointments
+      summary: Update appointment by id
+      operationId: Appointment_PatchAppointment
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: patch
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentApiPatch'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/areas:
+    get:
+      tags:
+        - Areas
+      operationId: Areas_GetAll
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/areas/{id}:
+    get:
+      tags:
+        - Areas
+      operationId: Areas_Get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/communicationChannelTypes:
+    get:
+      tags:
+        - Dictionaries
+      operationId: CommunicationChannelTypes_Get
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/containers:
+    get:
+      tags:
+        - Dictionaries
+      operationId: Containers_Get
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/documents/{documentId}/render:
+    get:
+      tags:
+        - Documents
+      summary: Render document as PDF
+      operationId: Documents_RenderPdf
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/documents/{documentId}/download:
+    get:
+      tags:
+        - Documents
+      summary: Download attachment
+      operationId: Documents_DownloadAttachment
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/documents/{documentId}/hl7:
+    get:
+      tags:
+        - Documents
+      summary: Get document as HL7 v2 message
+      operationId: Documents_GetHl7
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/documents/{documentId}/records:
+    get:
+      tags:
+        - Documents
+      operationId: Documents_GetDocumentRecords
+      parameters:
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentRecordApiInfo'
+      security:
+        - Api-Key: []
+  /api/documents/onlineaccesscode/{onlineAccessCode}/download:
+    get:
+      tags:
+        - Documents
+      summary: Download document from online access code
+      operationId: Documents_DownloadDocumentFromAccessCode
+      parameters:
+        - name: onlineAccessCode
+          in: path
+          required: true
+          schema:
+            type: string
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/documents:
+    get:
+      tags:
+        - Documents
+      summary: List documents for a person. Documents must be finalized (protected) to appear here.
+      operationId: Documents_GetPersonDocuments
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 2
+        - name: endDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentApiInfo'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Documents
+      summary: Attach file to patient's medical card
+      operationId: Documents_AttachDocument
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: request
+        description: |-
+          contentType: PdfDocument | Jpeg | Png | Gif | HtmlDocument | DicomFile
+
+          documentType: TitlePage | Consultation | Diary | ExaminationReport | LaboratoryResult | InterventionRecord | PrescriptionSheet | Epicrisis | Certificate | Referral | Consent | Contract | Financial | OtherNonMedical | OtherMedical
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDocumentApiAttach'
+            example:
+              documentName: Document name
+              documentDate: '2024-09-20'
+              documentType: LaboratoryResult
+              contentType: PdfDocument
+              content: JVBERi0xLjcNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFIvTGFuZyhlbi1VUykgL1N0cnVjdFRyZWVSb290IDE1IDAgUi9NYXJrSW5mbzw8L01hcmtlZCB0cnVlPj4vTWV0YWRhdGEgMjkgMCBSL1ZpZXdlclByZWZlcmVuY2VzIDMwIDAgUj4+DQplbmRvYmoNCjIgMCBvYmoNCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWyAzIDAgUl0gPj4NCmVuZG9iag0KMyAwIG9iag0KPDwvVHlwZS9QYWdlL1BhcmVudCAyIDAgUi9SZXNvdXJjZXM8PC9Gb250PDwvRjEgNSAwIFIvRjIgMTIgMCBSPj4vRXh0R1N0YXRlPDwvR1MxMCAxMCAwIFIvR1MxMSAxMSAwIFI+Pi9Qcm9jU2V0Wy9QREYvVGV4dC9JbWFnZUIvSW1hZ2VDL0ltYWdlSV0gPj4vTWVkaWFCb3hbIDAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIvR3JvdXA8PC9UeXBlL0dyb3VwL1MvVHJhbnNwYXJlbmN5L0NTL0RldmljZVJHQj4+L1RhYnMvUy9TdHJ1Y3RQYXJlbnRzIDA+Pg0KZW5kb2JqDQo0IDAgb2JqDQo8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDI0Nj4+DQpzdHJlYW0NCnicrZFPSwMxEMXvgXyHd2yFZieTNN3AEnCz3aLYg3TFg3joQfcgLv7B7+9srWDRnmpgkrzJkPnxBsXmZTugqop1vmhAxdV26DH5eJrdnE9TQt1kvGpFhsYVLYMQZF9ExtuDVrdnGLSqO62K1oK9iQHdo1ZW6giSITbWIcRgmNE9S91qYwn9u3yK/kvavVxpdVcRZ5dKrsjZQI4biTaVIrkkR62ka4ksNE5On9z+iW26R3ep1VJgrrU6hdp5b/ziJ/WO9ZvQuf/sNQ9GHDjai+ejE2nmx3vYuXHQG8t1Bg7HaE8ZI/8B6SmaGI9ATjD9TfQJZRx3FA0KZW5kc3RyZWFtDQplbmRvYmoNCjUgMCBvYmoNCjw8L1R5cGUvRm9udC9TdWJ0eXBlL1R5cGUwL0Jhc2VGb250L0JDREVFRStDYWxpYnJpLUJvbGQvRW5jb2RpbmcvSWRlbnRpdHktSC9EZXNjZW5kYW50Rm9udHMgNiAwIFIvVG9Vbmljb2RlIDI1IDAgUj4+DQplbmRvYmoNCjYgMCBvYmoNClsgNyAwIFJdIA0KZW5kb2JqDQo3IDAgb2JqDQo8PC9CYXNlRm9udC9CQ0RFRUUrQ2FsaWJyaS1Cb2xkL1N1YnR5cGUvQ0lERm9udFR5cGUyL1R5cGUvRm9udC9DSURUb0dJRE1hcC9JZGVudGl0eS9EVyAxMDAwL0NJRFN5c3RlbUluZm8gOCAwIFIvRm9udERlc2NyaXB0b3IgOSAwIFIvVyAyNyAwIFI+Pg0KZW5kb2JqDQo4IDAgb2JqDQo8PC9PcmRlcmluZyhJZGVudGl0eSkgL1JlZ2lzdHJ5KEFkb2JlKSAvU3VwcGxlbWVudCAwPj4NCmVuZG9iag0KOSAwIG9iag0KPDwvVHlwZS9Gb250RGVzY3JpcHRvci9Gb250TmFtZS9CQ0RFRUUrQ2FsaWJyaS1Cb2xkL0ZsYWdzIDMyL0l0YWxpY0FuZ2xlIDAvQXNjZW50IDc1MC9EZXNjZW50IC0yNTAvQ2FwSGVpZ2h0IDc1MC9BdmdXaWR0aCA1MzYvTWF4V2lkdGggMTc4MS9Gb250V2VpZ2h0IDcwMC9YSGVpZ2h0IDI1MC9TdGVtViA1My9Gb250QkJveFsgLTUxOSAtMjUwIDEyNjMgNzUwXSAvRm9udEZpbGUyIDI2IDAgUj4+DQplbmRvYmoNCjEwIDAgb2JqDQo8PC9UeXBlL0V4dEdTdGF0ZS9CTS9Ob3JtYWwvY2EgMT4+DQplbmRvYmoNCjExIDAgb2JqDQo8PC9UeXBlL0V4dEdTdGF0ZS9CTS9Ob3JtYWwvQ0EgMT4+DQplbmRvYmoNCjEyIDAgb2JqDQo8PC9UeXBlL0ZvbnQvU3VidHlwZS9UcnVlVHlwZS9OYW1lL0YyL0Jhc2VGb250L0JDREZFRStDYWxpYnJpLUJvbGQvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nL0ZvbnREZXNjcmlwdG9yIDEzIDAgUi9GaXJzdENoYXIgMzIvTGFzdENoYXIgMzIvV2lkdGhzIDI4IDAgUj4+DQplbmRvYmoNCjEzIDAgb2JqDQo8PC9UeXBlL0ZvbnREZXNjcmlwdG9yL0ZvbnROYW1lL0JDREZFRStDYWxpYnJp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YmoNClsgMFsgNTA3XSAgM1sgMjI2XSAgNzA3WyA0OTVdICA3ODNbIDQ5NV0gIDc4OFsgNTgyXSAgNzkwWyA1MDNdICA3OTVbIDU1NyA1NTddICA4MDFbIDQ5NV0gIDgwNVsgNzEzIDU0NV0gIDgwOFsgNTM4XSAgODEzWyA0MThdICA4MTVbIDM5MF0gIDgxN1sgNDc0XSBdIA0KZW5kb2JqDQoyOCAwIG9iag0KWyAyMjZdIA0KZW5kb2JqDQoyOSAwIG9iag0KPDwvVHlwZS9NZXRhZGF0YS9TdWJ0eXBlL1hNTC9MZW5ndGggMzA2Mz4+DQpzdHJlYW0NCjw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+PHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iMy4xLTcwMSI+CjxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CjxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiICB4bWxuczpwZGY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vcGRmLzEuMy8iPgo8cGRmOlByb2R1Y2VyPk1pY3Jvc29mdMKuIFdvcmQgMjAxOTwvcGRmOlByb2R1Y2VyPjwvcmRmOkRlc2NyaXB0aW9uPgo8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIj4KPGRjOmNyZWF0b3I+PHJkZjpTZXE+PHJkZjpsaT5OYXphciBZYXRzeXVrPC9yZGY6bGk+PC9yZGY6U2VxPjwvZGM6Y3JlYXRvcj48L3JkZjpEZXNjcmlwdGlvbj4KPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyI+Cjx4bXA6Q3JlYXRvclRvb2w+TWljcm9zb2Z0wq4gV29yZCAyMDE5PC94bXA6Q3JlYXRvclRvb2w+PHhtcDpDcmVhdGVEYXRlPjIwMjQtMDYtMTRUMTU6MzQ6MzQrMDM6MDA8L3htcDpDcmVhdGVEYXRlPjx4bXA6TW9kaWZ5RGF0ZT4yMDI0LTA2LTE0VDE1OjM0OjM0KzAzOjAwPC94bXA6TW9kaWZ5RGF0ZT48L3JkZjpEZXNjcmlwdGlvbj4KPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIj4KPHhtcE1NOkRvY3VtZW50SUQ+dXVpZDo4MTk1N0I5RC1BMjRGLTRGNTYtODNGNC00OUVFQUEyQTA3MDU8L3htcE1NOkRvY3VtZW50SUQ+PHhtcE1NOkluc3RhbmNlSUQ+dXVpZDo4MTk1N0I5RC1BMjRGLTRGNTYtODNGNC00OUVFQUEyQTA3MDU8L3htcE1NOkluc3RhbmNlSUQ+PC9yZGY6RGVzY3JpcHRpb24+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8L3JkZjpSREY+PC94OnhtcG1ldGE+PD94cGFja2V0IGVuZD0idyI/Pg0KZW5kc3RyZWFtDQplbmRvYmoNCjMwIDAgb2JqDQo8PC9EaXNwbGF5RG9jVGl0bGUgdHJ1ZT4+DQplbmRvYmoNCjMxIDAgb2JqDQo8PC9UeXBlL1hSZWYvU2l6ZSAzMS9XWyAxIDQgMl0gL1Jvb3QgMSAwIFIvSW5mbyAxNCAwIFIvSURbPDlEN0I5NTgxNEZBMjU2NEY4M0Y0NDlFRUFBMkEwNzA1Pjw5RDdCOTU4MTRGQTI1NjRGODNGNDQ5RUVBQTJBMDcwNT5dIC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDExNz4+DQpzdHJlYW0NCnicY2AAgv//GYGkIAMDiFoGoe6BKcYvYIrZBELthlDXwRRLJYQ6BKZYt0GoN2CKTQlCXQBT7EcZGJiAZoozsEAoVgjFBqHYIRQzhGKCUFANHEDtHCtgPEYgjysVbCb3KzCVWQSmsmQglDmYKmtkYAAAEmIROA0KZW5kc3RyZWFtDQplbmRvYmoNCnhyZWYNCjAgMzINCjAwMDAwMDAwMTUgNjU1MzUgZg0KMDAwMDAwMDAxNyAwMDAwMCBuDQowMDAwMDAwMTY2IDAwMDAwIG4NCjAwMDAwMDAyMjIgMDAwMDAgbg0KMDAwMDAwMDUwMCAwMDAwMCBuDQowMDAwMDAwODIwIDAwMDAwIG4NCjAwMDAwMDA5NTUgMDAwMDAgbg0KMDAwMDAwMDk4MyAwMDAwMCBuDQowMDAwMDAxMTQ1IDAwMDAwIG4NCjAwMDAwMDEyMTggMDAwMDAgbg0KMDAwMDAwMTQ2MiAwMDAwMCBuDQowMDAwMDAxNTE2IDAwMDAwIG4NCjAwMDAwMDE1NzAgMDAwMDAgbg0KMDAwMDAwMTc0NCAwMDAwMCBuDQowMDAwMDAxOTg5IDAwMDAwIG4NCjAwMDAwMDAwMTYgNjU1MzUgZg0KMDAwMDAwMDAxNyA2NTUzNSBmDQowMDAwMDAwMDE4IDY1NTM1IGYNCjAwMDAwMDAwMTkgNjU1MzUgZg0KMDAwMDAwMDAyMCA2NTUzNSBmDQowMDAwMDAwMDIxIDY1NTM1IGYNCjAwMDAwMDAwMjIgNjU1MzUgZg0KMDAwMDAwMDAyMyA2NTUzNSBmDQowMDAwMDAwMDI0IDY1NTM1IGYNCjAwMDAwMDAwMDAgNjU1MzUgZg0KMDAwMDAwMjY2MSAwMDAwMCBuDQowMDAwMDAzMDUwIDAwMDAwIG4NCjAwMDAwMjY5OTQgMDAwMDAgbg0KMDAwMDAyNzE2NCAwMDAwMCBuDQowMDAwMDI3MTkxIDAwMDAwIG4NCjAwMDAwMzAzMzcgMDAwMDAgbg0KMDAwMDAzMDM4MiAwMDAwMCBuDQp0cmFpbGVyDQo8PC9TaXplIDMyL1Jvb3QgMSAwIFIvSW5mbyAxNCAwIFIvSURbPDlEN0I5NTgxNEZBMjU2NEY4M0Y0NDlFRUFBMkEwNzA1Pjw5RDdCOTU4MTRGQTI1NjRGODNGNDQ5RUVBQTJBMDcwNT5dID4+DQpzdGFydHhyZWYNCjMwNzAwDQolJUVPRg0KeHJlZg0KMCAwDQp0cmFpbGVyDQo8PC9TaXplIDMyL1Jvb3QgMSAwIFIvSW5mbyAxNCAwIFIvSURbPDlEN0I5NTgxNEZBMjU2NEY4M0Y0NDlFRUFBMkEwNzA1Pjw5RDdCOTU4MTRGQTI1NjRGODNGNDQ5RUVBQTJBMDcwNT5dIC9QcmV2IDMwNzAwL1hSZWZTdG0gMzAzODI+Pg0Kc3RhcnR4cmVmDQozMTQ5Nw0KJSVFT0Y=
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/employees:
+    get:
+      tags:
+        - Resources
+      summary: Get list of employees
+      operationId: Employees_GetEmployees
+      parameters:
+        - name: specialityId
+          in: query
+          description: Optional speciality filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 1
+        - name: unitId
+          in: query
+          description: Optional unit filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 2
+        - name: includeNonActive
+          in: query
+          description: Include non active employees
+          schema:
+            type: boolean
+            default: false
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeApiInfo'
+      security:
+        - Api-Key: []
+  /api/employees/{employeeId}/commissions:
+    get:
+      tags:
+        - Resources
+      summary: Gets executor commissions for the period
+      operationId: Employees_GetCommissions
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommissionInfo'
+      security:
+        - Api-Key: []
+  /api/executors:
+    get:
+      tags:
+        - Resources
+      summary: Get list of executors
+      operationId: Executors_GetEmployees
+      parameters:
+        - name: specialityId
+          in: query
+          description: Optional speciality filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 1
+        - name: unitId
+          in: query
+          description: Optional unit filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 2
+        - name: includeNonActive
+          in: query
+          description: Include non active executors
+          schema:
+            type: boolean
+            default: false
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExecutorApiInfo'
+      security:
+        - Api-Key: []
+  /api/executors/{executorId}/persons:
+    get:
+      tags:
+        - Resources
+      summary: Gets ids of patient (persons), which had at least one service performed to by specified executor within specified dates.
+      operationId: Executors_GetCustomers
+      parameters:
+        - name: executorId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+      security:
+        - Api-Key: []
+  /api/executors/{executorId}/abilities:
+    get:
+      tags:
+        - Resources
+      summary: Get list of routines executor is capable of
+      operationId: Executors_GetAbilities
+      parameters:
+        - name: executorId
+          in: path
+          required: true
+          description: Id of executor (not same as employeeId!)
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AbilityApiInfo'
+      security:
+        - Api-Key: []
+  /api/healthCareInstitutions:
+    get:
+      tags:
+        - HealthCareInstitutions
+      operationId: HealthCareInstitutions_GetAll
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/healthCareInstitutions/{id}:
+    get:
+      tags:
+        - HealthCareInstitutions
+      operationId: HealthCareInstitutions_Get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/medReps:
+    get:
+      tags:
+        - MedReps
+      operationId: MedReps_GetAll
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/medReps/{id}:
+    get:
+      tags:
+        - MedReps
+      operationId: MedReps_Get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/person/{patientId}/orders:
+    get:
+      tags:
+        - Orders
+      summary: Get list of orders
+      operationId: Order_GetOrders
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          description: Patient filter
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 2
+        - name: endDate
+          in: query
+          description: Date filter
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+          x-position: 3
+        - name: unitId
+          in: query
+          description: Unit filter
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 4
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderShortApiInfo'
+      security:
+        - Api-Key: []
+  /api/orders/{orderId}:
+    get:
+      tags:
+        - Orders
+      summary: Get order by id
+      operationId: Order_GetOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApiInfo'
+      security:
+        - Api-Key: []
+  /api/orders:
+    post:
+      tags:
+        - Orders
+      summary: Create new order
+      operationId: Order_CreateNewOrder
+      requestBody:
+        x-name: create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderApiCreate'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/payments:
+    post:
+      tags:
+        - Payments
+      summary: Create new payment
+      operationId: Payments_CreatePayment
+      requestBody:
+        x-name: newPayment
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentApiRequest'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/accounts:
+    get:
+      tags:
+        - Person Accounts
+      summary: Get person accounts
+      operationId: PersonAccount_GetAccounts
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountBalanceApiInfo'
+      security:
+        - Api-Key: []
+  /api/personAccounts/{personId}/records:
+    get:
+      tags:
+        - Person Accounts
+      summary: Get person payments
+      operationId: PersonAccount_GetPersonPayments
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentApiInfo'
+      security:
+        - Api-Key: []
+  /api/personAccounts/{personAccountId}/records:
+    post:
+      tags:
+        - Person Accounts
+      summary: Top up person account by adding Internet payment
+      operationId: PersonAccount_TopUpPersonAccount
+      parameters:
+        - name: personAccountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: accountRecord
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountRecordApiRequest'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/channels:
+    get:
+      tags:
+        - Person Channels
+      operationId: PersonChannels_GetPersonChannels
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonChannelApiInfo'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Person Channels
+      operationId: PersonChannels_CreatePersonChannel
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonChannelApiCreate'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/personChannels/{channelId}:
+    patch:
+      tags:
+        - Person Channels
+      operationId: PersonChannels_PersonChannelPatch
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: patch
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonChannelApiPatch'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+    delete:
+      tags:
+        - Person Channels
+      operationId: PersonChannels_DeletePersonChannel
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/idDocuments:
+    post:
+      tags:
+        - Persons
+      operationId: PersonIdDocuments_CreatePersonIdDocument
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonIdDocumentApiCreate'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/personIdDocumentTypes:
+    get:
+      tags:
+        - Dictionaries
+      operationId: PersonIdDocumentTypes_GetPersonIdDocumentTypes
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonIdDocumentTypeApiInfo'
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/relations:
+    get:
+      tags:
+        - Person Relations
+      summary: Get person relations
+      operationId: PersonRelation_GetPersonRelations
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Person Relations
+      summary: Create a new person relation
+      operationId: PersonRelation_CreatePersonRelation
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: newRelation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePersonRelationApiRequest'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/personRelationTypes:
+    get:
+      tags:
+        - Dictionaries
+      summary: Gets person relation types to use for personRelation resource
+      operationId: PersonRelationTypes_GetPersonRelationTypes
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonRelationTypeApiInfo'
+      security:
+        - Api-Key: []
+  /api/persons:
+    get:
+      tags:
+        - Persons
+      summary: 'At least 1 parameter is required from the following: lastName, barcode, identificationNumber, channel'
+      operationId: Persons_Index
+      parameters:
+        - name: lastName
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 1
+        - name: firstName
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 2
+        - name: patronymicName
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 3
+        - name: channel
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 4
+        - name: barcode
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 5
+        - name: identificationNumber
+          in: query
+          schema:
+            type: string
+            nullable: true
+          x-position: 6
+        - name: dateOfBirth
+          in: query
+          schema:
+            type: string
+            format: date
+            nullable: true
+          x-position: 7
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonApiSearchResult'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Persons
+      summary: Create new person.
+      operationId: Persons_CreatePerson
+      requestBody:
+        x-name: create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonApiCreate'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/persons/{personId}:
+    get:
+      tags:
+        - Persons
+      summary: Returns details for a specific person.
+      operationId: Persons_GetPerson
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonApiInfo'
+      security:
+        - Api-Key: []
+    patch:
+      tags:
+        - Persons
+      summary: Updates person. Handle with care! Employees can also be updated in this way.
+      operationId: Persons_PatchPerson
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      requestBody:
+        x-name: patch
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonApiPatch'
+        required: true
+        x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/settlements:
+    get:
+      tags:
+        - Persons
+      summary: Returns payments (sales) for a person, used for CRM customer profiling.
+      operationId: Persons_GetPersonSettlementInfos
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonSettlementInfo'
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/practitioners:
+    get:
+      tags:
+        - Persons
+      summary: Gets ids of practitioners, which had at least one service referred to by specified person within specified dates.
+      operationId: Persons_GetPersonPractitionersInfos
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/persons/{personId}/personalDataConsentForms:
+    get:
+      tags:
+        - Persons
+      summary: Retrieves the personal data consent forms for a specified person.
+      operationId: Persons_GetPersonalDataConsentForms
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonalDataConsentFormApiInfo'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Persons
+      summary: Register new personal data consent form for a person.
+      operationId: Persons_CreatePersonalDataConsentForm
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/planning:
+    get:
+      tags:
+        - Planning
+      summary: Get available intervals according to search parameters.
+      operationId: PlanningApi_GetPlanning
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 1
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: unitId
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 3
+        - name: executorId
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 4
+        - name: specialityId
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 5
+        - name: routineId
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 6
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanningResultApiInfo'
+      security:
+        - Api-Key: []
+  /api/planning/multi:
+    post:
+      tags:
+        - Planning
+      summary: Get multiple planning appointment data
+      operationId: PlanningApi_GetMultiPlanningAppointmentData
+      requestBody:
+        x-name: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMultiPlanningAppointmentDataRequest'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppointmentPlanningDataApiInfo'
+      security:
+        - Api-Key: []
+  /api/practitioners:
+    get:
+      tags:
+        - Referring doctors
+      summary: Get referring doctors
+      operationId: Practitioner_GetPractitioners
+      parameters:
+        - name: code
+          in: query
+          description: Code
+          schema:
+            type: string
+            nullable: true
+          x-position: 1
+        - name: page
+          in: query
+          description: Page
+          schema:
+            type: integer
+            format: int32
+            default: 1
+          x-position: 2
+        - name: pageSize
+          in: query
+          description: Page size (max 200)
+          schema:
+            type: integer
+            format: int32
+            default: 50
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PractitionerApiInfo'
+      security:
+        - Api-Key: []
+    post:
+      tags:
+        - Referring doctors
+      summary: Create practitioner (referring doctor). Id of existing person should be provided. Id of practitioner resource is equal to person.id
+      operationId: Practitioner_CreatePractitioner
+      requestBody:
+        x-name: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePractitionerApiRequest'
+        required: true
+        x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdApiInfo'
+      security:
+        - Api-Key: []
+  /api/practitioners/{practitionerId}/persons:
+    get:
+      tags:
+        - Referring doctors
+      summary: Gets ids of patient (persons), which had at least one service referred to by specified practitioner within specified dates.
+      operationId: Practitioner_GetCustomers
+      parameters:
+        - name: practitionerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int32
+      security:
+        - Api-Key: []
+  /api/practitioners/{practitionerId}/commissions:
+    get:
+      tags:
+        - Referring doctors
+      summary: Gets practitioner commissions for the period
+      operationId: Practitioner_GetCommissions
+      parameters:
+        - name: practitionerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommissionInfo'
+      security:
+        - Api-Key: []
+  /api/priceModels:
+    get:
+      tags:
+        - Pricing
+      operationId: PriceModels_GetPriceModels
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PriceModelApiInfo'
+      security:
+        - Api-Key: []
+  /api/priceModels/{priceModelId}/routines/{routineId}:
+    get:
+      tags:
+        - Pricing
+      operationId: PriceModels_GetRoutinePrice
+      parameters:
+        - name: priceModelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: routineId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutinePriceApiInfo'
+      security:
+        - Api-Key: []
+  /api/priceModels/{priceModelId}/priceRules:
+    get:
+      tags:
+        - Pricing
+      operationId: PriceModels_GetPriceRules
+      parameters:
+        - name: priceModelId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutinePriceApiInfo'
+      security:
+        - Api-Key: []
+  /api/promotions:
+    get:
+      tags:
+        - Promotions
+      summary: Get all active promotions
+      operationId: Promotion_GetAll
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/promotions/{promotionId}:
+    get:
+      tags:
+        - Promotions
+      summary: Get promotion details
+      operationId: Promotion_GetPromotion
+      parameters:
+        - name: promotionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionApiInfo'
+      security:
+        - Api-Key: []
+  /api/routines/{routineId}/promotions:
+    get:
+      tags:
+        - Promotions
+      summary: Get possible promotions for routine
+      operationId: Promotion_GetRoutinePromotions
+      parameters:
+        - name: routineId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutinePromotionApiInfo'
+      security:
+        - Api-Key: []
+  /api/employees/{employeeId}/timeslots:
+    get:
+      tags:
+        - Resources
+      summary: Gets employee timeslots for the specified dates, grouped by unit
+      operationId: ResourceTimeslot_GetTimeSlots
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 2
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          x-position: 3
+        - name: unitId
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+          x-position: 4
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExecutorUnitTimeslots'
+      security:
+        - Api-Key: []
+  /api/routines:
+    get:
+      tags:
+        - Routines
+      summary: Search routines. If search is not specified, all routines are returned
+      operationId: Routines_SearchRoutines
+      parameters:
+        - name: search
+          in: query
+          description: Part of name, group name, keyword, or code (exact match)
+          schema:
+            type: string
+            nullable: true
+          x-position: 1
+        - name: includeDeactivated
+          in: query
+          description: Include inactive routines into search result
+          schema:
+            type: boolean
+          x-position: 2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutineApiSearchResult'
+      security:
+        - Api-Key: []
+  /api/routines/{routineId}:
+    get:
+      tags:
+        - Routines
+      summary: Get details for routine
+      operationId: Routines_GetRoutine
+      parameters:
+        - name: routineId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          x-position: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutineApiInfo'
+      security:
+        - Api-Key: []
+  /api/routineGroups:
+    get:
+      tags:
+        - Routines
+      summary: Get routine groups
+      operationId: Routines_GetRoutineGroups
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoutineGroupApiInfo'
+      security:
+        - Api-Key: []
+  /api/specialities:
+    get:
+      tags:
+        - Dictionaries
+      operationId: Specialities_Get
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/substances:
+    get:
+      tags:
+        - Dictionaries
+      operationId: Substances_Get
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityApiInfo'
+      security:
+        - Api-Key: []
+  /api/units:
+    get:
+      tags:
+        - Resources
+      summary: Get list of units - clinic and blood drawing points. Units are used when planning and creating orders.
+      operationId: Units_Get
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitApiInfo'
+      security:
+        - Api-Key: []
+components:
+  schemas:
+    AppointmentApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        unitId:
+          type: integer
+          format: int32
+          nullable: true
+        mainExecutorEmployeeId:
+          type: integer
+          format: int32
+          nullable: true
+        referrerId:
+          type: integer
+          format: int32
+          nullable: true
+        venueId:
+          type: integer
+          format: int32
+          nullable: true
+        start:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          format: int32
+    AppointmentOrderApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        personId:
+          type: integer
+          format: int32
+        unitId:
+          type: integer
+          format: int32
+          nullable: true
+        venueId:
+          type: integer
+          format: int32
+          nullable: true
+        mainExecutorId:
+          type: integer
+          format: int32
+          nullable: true
+        referrerId:
+          type: integer
+          format: int32
+          nullable: true
+        state:
+          $ref: '#/components/schemas/AppointmentState'
+        visitConfirmationState:
+          $ref: '#/components/schemas/VisitConfirmationState'
+        plannedStartTime:
+          type: string
+          format: date-time
+        comment:
+          type: string
+          nullable: true
+        customerInformationSourceDescription:
+          type: string
+          nullable: true
+        services:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/OrderServiceApiInfo'
+        hasLabRequest:
+          type: boolean
+        diagnosisCodes:
+          type: array
+          nullable: true
+          items:
+            type: string
+        availableStates:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AppointmentState'
+    AppointmentState:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - Reserved
+        - Planned
+        - PatientWaiting
+        - InProgress
+        - Suspended
+        - Completed
+        - Cancelled
+        - NoShow
+        - ToPlan
+      enum:
+        - NotDefined
+        - Reserved
+        - Planned
+        - PatientWaiting
+        - InProgress
+        - Suspended
+        - Completed
+        - Cancelled
+        - NoShow
+        - ToPlan
+    VisitConfirmationState:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - NotConfirmed
+        - MessageReminder
+        - ConfirmedByPhone
+        - CallFailed
+        - NotNeeded
+        - ConfirmedByOnlineForm
+        - ConfirmedViaChatBot
+      enum:
+        - NotDefined
+        - NotConfirmed
+        - MessageReminder
+        - ConfirmedByPhone
+        - CallFailed
+        - NotNeeded
+        - ConfirmedByOnlineForm
+        - ConfirmedViaChatBot
+    OrderServiceApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        payerId:
+          type: integer
+          format: int32
+        routineId:
+          type: integer
+          format: int32
+        referrerId:
+          type: integer
+          format: int32
+          nullable: true
+        isBillable:
+          type: boolean
+        unitPrice:
+          type: number
+          format: decimal
+        quantity:
+          type: number
+          format: decimal
+        discount:
+          type: number
+          format: decimal
+        deductible:
+          type: number
+          format: decimal
+        value:
+          type: number
+          format: decimal
+        vatRate:
+          type: number
+          format: decimal
+          nullable: true
+        settledAmoutPerson:
+          type: number
+          format: decimal
+        settledAmoutCompany:
+          type: number
+          format: decimal
+    AppointmentPlanningRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - personId
+        - mainExecutorId
+        - unitId
+        - start
+        - duration
+      properties:
+        personId:
+          type: integer
+          description: Person to plan appointment for
+          format: int32
+        mainExecutorId:
+          type: integer
+          description: Id of main executor resource (employee or role). Use id of executor which is returned by api/planning
+          format: int32
+        unitId:
+          type: integer
+          description: Id of Unit to plan appointment
+          format: int32
+        start:
+          type: string
+          description: Date and time of appointment start
+          format: date-time
+          minLength: 1
+        duration:
+          type: integer
+          description: Appointment duration in minutes
+          format: int32
+        state:
+          description: Appointment state - Planned or Reserved. If not specified, Planned is assumed.
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/AppointmentState'
+        reserveExpiration:
+          type: string
+          description: Date and time of reserve expiration. Used only for Reserved state. If empty, 10 minutes is assumed
+          format: date-time
+          nullable: true
+        referrerId:
+          type: integer
+          description: Id of referring doctor (practitioner resource).
+          format: int32
+          nullable: true
+        services:
+          type: array
+          description: List of services to plan. May be null/empty, empty appointments are permitted.
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ServiceInAppointmentRequest'
+    ServiceInAppointmentRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - routineId
+      properties:
+        routineId:
+          type: integer
+          description: Routine Id for service
+          format: int32
+        unitPrice:
+          type: number
+          description: Service unit price. Omit this parameter or pass null to get default price from pricelist
+          format: decimal
+          nullable: true
+        discount:
+          type: number
+          description: Service discount, as fraction. 10% discount should be passed as 0.1. Omit this parameter or pass null to get default discount from pricelist
+          format: decimal
+          nullable: true
+    AppointmentApiPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        state:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfAppointmentState'
+    PropertyPatchOfAppointmentState:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          $ref: '#/components/schemas/AppointmentState'
+    EntityApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+    DocumentRecordApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+    DocumentApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+          nullable: true
+        typeName:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        appointmentId:
+          type: integer
+          format: int32
+          nullable: true
+        createdOn:
+          type: string
+          format: date-time
+          nullable: true
+        author:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        isAttachment:
+          type: boolean
+        contentType:
+          type: string
+          nullable: true
+    PersonDocumentApiAttach:
+      type: object
+      additionalProperties: false
+      required:
+        - documentName
+        - content
+      properties:
+        documentName:
+          type: string
+          description: Original file name. If has extension, will be used to determine content type if ContentType is not specified. File name without extension becomes document name.
+          minLength: 1
+        documentDate:
+          type: string
+          description: Document date / time. If not specified, current date is used
+          format: date
+        documentType:
+          description: Specifies target medical card section. Defaults to LaboratoryResult.
+          oneOf:
+            - $ref: '#/components/schemas/DocumentType'
+        contentType:
+          description: Content type. Has priority over file extension.
+          oneOf:
+            - $ref: '#/components/schemas/AttachmentContentType'
+        content:
+          type: string
+          description: Base64 encoded file content
+          format: byte
+          minLength: 1
+    DocumentType:
+      type: string
+      description: ''
+      x-enumNames:
+        - Undefined
+        - TitlePage
+        - Consultation
+        - Diary
+        - ExaminationReport
+        - LaboratoryResult
+        - InterventionRecord
+        - PrescriptionSheet
+        - Epicrisis
+        - Certificate
+        - Referral
+        - Consent
+        - Contract
+        - Financial
+        - OtherNonMedical
+        - OtherMedical
+      enum:
+        - Undefined
+        - TitlePage
+        - Consultation
+        - Diary
+        - ExaminationReport
+        - LaboratoryResult
+        - InterventionRecord
+        - PrescriptionSheet
+        - Epicrisis
+        - Certificate
+        - Referral
+        - Consent
+        - Contract
+        - Financial
+        - OtherNonMedical
+        - OtherMedical
+    AttachmentContentType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - PdfDocument
+        - Jpeg
+        - Png
+        - Gif
+        - HtmlDocument
+        - DicomFile
+        - XpsDocument
+        - WordOpenXml
+        - ExcelOpenXml
+        - Calendar
+        - Tiff
+        - Bmp
+        - Avi
+        - Hl7v2
+        - Wav
+        - Mp3
+        - Ogg
+        - Zip
+        - Webp
+        - Mp4
+        - Json
+      enum:
+        - NotDefined
+        - PdfDocument
+        - Jpeg
+        - Png
+        - Gif
+        - HtmlDocument
+        - DicomFile
+        - XpsDocument
+        - WordOpenXml
+        - ExcelOpenXml
+        - Calendar
+        - Tiff
+        - Bmp
+        - Avi
+        - Hl7v2
+        - Wav
+        - Mp3
+        - Ogg
+        - Zip
+        - Webp
+        - Mp4
+        - Json
+    EmployeeApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          description: Employee id is also a person id
+          format: int32
+        fullName:
+          type: string
+          nullable: true
+        specialities:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/EntityApiInfo'
+        executorId:
+          type: integer
+          description: Id of executor resource for this employee
+          format: int32
+          nullable: true
+        isActive:
+          type: boolean
+    CommissionInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        patientName:
+          title: Patient
+          type: string
+          nullable: true
+        routineName:
+          title: Service
+          type: string
+          nullable: true
+        serviceId:
+          type: integer
+          format: int32
+        accruedOn:
+          title: Date
+          type: string
+          format: date-time
+        unitName:
+          title: Unit
+          type: string
+          nullable: true
+        serviceValue:
+          title: Selling price
+          type: number
+          format: decimal
+        value:
+          title: Amount
+          type: number
+          format: decimal
+        commissionareShortName:
+          type: string
+          nullable: true
+        extraResourceRequirementTypeName:
+          type: string
+          nullable: true
+        appointmentId:
+          type: integer
+          format: int32
+          nullable: true
+        orderId:
+          type: integer
+          format: int32
+          nullable: true
+        calculationFormula:
+          type: string
+          nullable: true
+    ExecutorApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        isExecutorEmployee:
+          type: boolean
+        employeeId:
+          type: integer
+          description: Employee Id (only for employee executors
+          format: int32
+          nullable: true
+        unitIds:
+          type: array
+          description: List of units which the executor belongs to
+          nullable: true
+          items:
+            type: integer
+            format: int32
+        defaultAppointmentDuration:
+          type: integer
+          description: Default timeslot / appointment duration if services are not specified
+          format: int32
+        isActive:
+          type: boolean
+    AbilityApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        routineId:
+          type: integer
+          description: Id of routine. Only regular routines are allowed in abilities.
+          format: int32
+        durationSingleOverride:
+          type: integer
+          description: If set, standalone duration of routine for this employee overrides the default duration
+          format: int32
+          nullable: true
+        durationCombinedOverride:
+          type: integer
+          description: If set, combined duration of routine for this employee overrides the default duration
+          format: int32
+          nullable: true
+        isAvailableOnline:
+          type: boolean
+          description: Show the routine on the web portal
+    OrderShortApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        number:
+          type: string
+          nullable: true
+        dateTime:
+          type: string
+          format: date-time
+        unitId:
+          type: integer
+          format: int32
+    OrderApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        number:
+          type: string
+          nullable: true
+        dateTime:
+          type: string
+          format: date-time
+        unitId:
+          type: integer
+          format: int32
+        webCode:
+          type: string
+          nullable: true
+        personId:
+          type: integer
+          format: int32
+        isLocked:
+          type: boolean
+        canBeDeleted:
+          type: boolean
+        billableValue:
+          type: number
+          format: decimal
+        settledAmountPerson:
+          type: number
+          format: decimal
+        settledAmountCompany:
+          type: number
+          format: decimal
+        outstandingAmountPerson:
+          type: number
+          format: decimal
+        outstandingAmountCompany:
+          type: number
+          format: decimal
+        services:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ServiceApiInfo'
+        labRequestId:
+          type: integer
+          format: int32
+          nullable: true
+        payerId:
+          type: integer
+          format: int32
+          nullable: true
+        diagnosisForInvoice:
+          type: string
+          nullable: true
+    ServiceApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        payerId:
+          type: integer
+          format: int32
+        routineId:
+          type: integer
+          format: int32
+        referrerId:
+          type: integer
+          format: int32
+          nullable: true
+        isBillable:
+          type: boolean
+        unitPrice:
+          type: number
+          format: decimal
+        quantity:
+          type: number
+          format: decimal
+        discount:
+          type: number
+          format: decimal
+        deductible:
+          type: number
+          format: decimal
+        value:
+          type: number
+          format: decimal
+        vatRate:
+          type: number
+          format: decimal
+        settledAmoutPerson:
+          type: number
+          format: decimal
+        settledAmoutCompany:
+          type: number
+          format: decimal
+    EntityIdApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+    OrderApiCreate:
+      type: object
+      additionalProperties: false
+      required:
+        - unitId
+        - patientId
+      properties:
+        unitId:
+          type: integer
+          format: int32
+        patientId:
+          type: integer
+          format: int32
+        dateTime:
+          type: string
+          description: Date (or date and time) used for order. If not specified, current date/time is used.
+          format: date-time
+          nullable: true
+        referrerId:
+          type: integer
+          description: Referrer (practitioner) which will be set for services in order.
+          format: int32
+          nullable: true
+        services:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ServiceInOrderRequest'
+        comment:
+          type: string
+          nullable: true
+        diagnosisForInvoice:
+          type: string
+          nullable: true
+    ServiceInOrderRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - routineId
+        - unitPrice
+        - discount
+      properties:
+        routineId:
+          type: integer
+          description: Routine Id for service
+          format: int32
+        unitPrice:
+          type: number
+          description: Service unit price.
+          format: decimal
+        discount:
+          type: number
+          description: Service discount, as fraction. 10% discount should be passed as 0.1.
+          format: decimal
+    CreatePaymentApiRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - amount
+      properties:
+        invoiceId:
+          type: integer
+          format: int32
+          nullable: true
+        appointmentId:
+          type: integer
+          format: int32
+          deprecated: true
+          x-deprecatedMessage: Use AppointmentIds
+          nullable: true
+        appointmentIds:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+        orderId:
+          type: integer
+          format: int32
+          deprecated: true
+          x-deprecatedMessage: Use OrderIds
+          nullable: true
+        orderIds:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+        amount:
+          type: number
+          format: decimal
+        transactionDateTime:
+          type: string
+          format: date-time
+          nullable: true
+        id:
+          type: string
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+    AccountBalanceApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        currentBalance:
+          type: number
+          format: decimal
+    PaymentApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        number:
+          type: string
+          nullable: true
+        accrualDateTime:
+          type: string
+          format: date
+        cashierDesk:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        isFiscalized:
+          type: boolean
+        amount:
+          type: number
+          format: decimal
+        createdBy:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        registrationUnit:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        paymentTransactions:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/PaymentTransactionApiInfo'
+    PaymentType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - CashierDesk
+        - BankTransfer
+        - Internet
+      enum:
+        - NotDefined
+        - CashierDesk
+        - BankTransfer
+        - Internet
+    PaymentTransactionApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        dateTime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: decimal
+        cashInAmount:
+          type: number
+          format: decimal
+        roundingAmount:
+          type: number
+          format: decimal
+        transactionNumber:
+          type: string
+          nullable: true
+    PaymentMethod:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - Cash
+        - BankCard
+        - BankTransfer
+        - Internet
+      enum:
+        - NotDefined
+        - Cash
+        - BankCard
+        - BankTransfer
+        - Internet
+    CreateAccountRecordApiRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+          format: decimal
+        transactionDateTime:
+          type: string
+          description: Date and time of transaction. If left empty, current datetime is used
+          format: date-time
+          nullable: true
+    PersonChannelApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        communicationChannelTypeId:
+          type: integer
+          format: int32
+        allowDocumentDelivery:
+          type: boolean
+        allowNotifications:
+          type: boolean
+        allowPromotions:
+          type: boolean
+        value:
+          type: string
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+    PersonChannelApiCreate:
+      type: object
+      additionalProperties: false
+      required:
+        - typeId
+        - value
+        - allowDocumentDelivery
+        - allowNotifications
+        - allowPromotions
+      properties:
+        typeId:
+          type: integer
+          format: int32
+        value:
+          type: string
+          minLength: 1
+        comment:
+          type: string
+          nullable: true
+        allowDocumentDelivery:
+          type: boolean
+        allowNotifications:
+          type: boolean
+        allowPromotions:
+          type: boolean
+    PersonChannelApiPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        typeId:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfInteger'
+        value:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfString'
+        comment:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfString'
+        allowDocumentDelivery:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfBoolean'
+        allowNotifications:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfBoolean'
+        allowPromotions:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfBoolean'
+    PropertyPatchOfInteger:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          type: integer
+          format: int32
+    PropertyPatchOfString:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          type: string
+          nullable: true
+    PropertyPatchOfBoolean:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          type: boolean
+    PersonIdDocumentApiCreate:
+      type: object
+      additionalProperties: false
+      properties:
+        typeId:
+          type: integer
+          format: int32
+        number:
+          type: string
+          nullable: true
+        issuedBy:
+          type: string
+          nullable: true
+        issuedOn:
+          type: string
+          format: date
+          nullable: true
+        expiresOn:
+          type: string
+          format: date
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+    PersonIdDocumentTypeApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        canSpecifyName:
+          type: boolean
+        hasExpirationDate:
+          type: boolean
+    CreatePersonRelationApiRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        relatedPersonId:
+          type: integer
+          format: int32
+        relationTypeId:
+          type: integer
+          format: int32
+        isPartyA:
+          type: boolean
+        shareMobilePhone:
+          type: boolean
+        shareLandLine:
+          type: boolean
+        shareEmail:
+          type: boolean
+        shareDocuments:
+          type: boolean
+    PersonRelationTypeApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        partyAName:
+          type: string
+          description: Name of relation from A side
+          nullable: true
+        partyBName:
+          type: string
+          description: Name of relation from B side
+          nullable: true
+        partyAGender:
+          type: string
+          description: Gender of person at A side of relation. If not specified, relation is not gender specific. Not strictly enforced at API
+          nullable: true
+        partyBGender:
+          type: string
+          description: Gender of person at B side of relation. If not specified, relation is not gender specific. Not strictly enforced at API
+          nullable: true
+    PersonApiSearchResult:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        lastName:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        patronymicName:
+          type: string
+          nullable: true
+        dateOfBirth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        barcode:
+          type: string
+          nullable: true
+        identificationNumber:
+          type: string
+          nullable: true
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+          nullable: true
+    PersonApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        lastName:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        patronymicName:
+          type: string
+          nullable: true
+        dateOfBirth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        barcode:
+          type: string
+          nullable: true
+        identificationNumber:
+          type: string
+          nullable: true
+        defaultPayerPriceModelId:
+          type: integer
+          format: int32
+          nullable: true
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+          nullable: true
+        isEmployee:
+          type: boolean
+        isPractitioner:
+          type: boolean
+    PersonApiCreate:
+      type: object
+      additionalProperties: false
+      required:
+        - firstName
+        - lastName
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        patronymicName:
+          type: string
+          nullable: true
+        dateOfBirth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/PersonGender'
+        createAccountForDefaultOwnCompany:
+          type: boolean
+    PersonGender:
+      type: string
+      description: ''
+      x-enumNames:
+        - Unspecified
+        - Male
+        - Female
+      enum:
+        - Unspecified
+        - Male
+        - Female
+    PersonApiPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        firstName:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfString'
+        lastName:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfString'
+        patronymicName:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfString'
+        dateOfBirth:
+          format: date
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfNullableDateTime'
+        gender:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PropertyPatchOfPersonGender'
+    PropertyPatchOfNullableDateTime:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          type: string
+          format: date-time
+          nullable: true
+    PropertyPatchOfPersonGender:
+      type: object
+      additionalProperties: false
+      properties:
+        value:
+          $ref: '#/components/schemas/PersonGender'
+    PersonSettlementInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        settlementDateTime:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: decimal
+        vat:
+          type: number
+          format: decimal
+        paymentType:
+          type: string
+          nullable: true
+        cashierDeskName:
+          type: string
+          nullable: true
+        invoiceId:
+          type: integer
+          format: int32
+        invoiceDate:
+          type: string
+          format: date-time
+        invoiceUnitId:
+          type: integer
+          format: int32
+          nullable: true
+        invoiceUnitName:
+          type: string
+          nullable: true
+        payerName:
+          type: string
+          nullable: true
+        payerLegalEntityName:
+          type: string
+          nullable: true
+        payerLegalEntityIdentificationNumber:
+          type: string
+          nullable: true
+        sellerLegalEntityName:
+          type: string
+          nullable: true
+        sellerLegalEntityIdentificationNumber:
+          type: string
+          nullable: true
+    PersonalDataConsentFormApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        signedOn:
+          type: string
+          format: date-time
+          nullable: true
+        createdById:
+          type: integer
+          format: int32
+    PlanningResultApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        date:
+          type: string
+          format: date
+        unit:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        executor:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        availableIntervals:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/AvailableIntervalApiInfo'
+    AvailableIntervalApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        start:
+          type: string
+          nullable: true
+        end:
+          type: string
+          nullable: true
+    AppointmentPlanningDataApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        unitId:
+          type: integer
+          format: int32
+        routines:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/RoutineAssociationPlanningDataApiInfo'
+        executors:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/EntityApiInfo'
+    RoutineAssociationPlanningDataApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        routineId:
+          type: integer
+          format: int32
+        plannedFromRoutineId:
+          type: integer
+          format: int32
+          nullable: true
+    GetMultiPlanningAppointmentDataRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - unitId
+        - routineIds
+      properties:
+        unitId:
+          type: integer
+          format: int32
+        routineIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+    PractitionerApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        specialityIds:
+          type: array
+          nullable: true
+          items:
+            type: integer
+            format: int32
+    CreatePractitionerApiRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - personId
+      properties:
+        personId:
+          type: integer
+          description: Id of existing person resource to add practitioner role
+          format: int32
+        principalSpecialityId:
+          type: integer
+          description: Principal practitioner speciality
+          format: int32
+          nullable: true
+    PriceModelApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        isDefault:
+          type: boolean
+        payerId:
+          type: integer
+          format: int32
+        payerName:
+          type: string
+          nullable: true
+        legalEntityName:
+          type: string
+          nullable: true
+        legalEntityNationalIdentificationNumber:
+          type: string
+          nullable: true
+    RoutinePriceApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        routineId:
+          type: integer
+          format: int32
+        isAllowed:
+          type: boolean
+        price:
+          type: number
+          format: decimal
+          nullable: true
+        discount:
+          type: number
+          format: decimal
+          nullable: true
+    PromotionApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+        autoActivation:
+          type: boolean
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+        dayOfWeekRule:
+          type: string
+          description: 'Day of the week: 1-7, where 1 is Monday and 7 is Sunday'
+          nullable: true
+        dayTimeFromRule:
+          type: string
+          format: duration
+          nullable: true
+        dayTimeToRule:
+          type: string
+          format: duration
+          nullable: true
+        genderRule:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/PersonGender'
+        minAgeRule:
+          type: integer
+          format: byte
+          nullable: true
+        maxAgeRule:
+          type: integer
+          format: byte
+          nullable: true
+        promotionPayerRules:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/EntityApiInfo'
+        promotionUnitRules:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/EntityApiInfo'
+        allowAnyRoutine:
+          type: boolean
+        promotionRoutineRules:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/PromotionRoutineApiInfo'
+        discount:
+          type: number
+          format: decimal
+    PromotionRoutineApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        discount:
+          type: number
+          format: decimal
+          nullable: true
+    RoutinePromotionApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        discound:
+          type: number
+          format: decimal
+    ExecutorUnitTimeslots:
+      type: object
+      additionalProperties: false
+      properties:
+        resourceId:
+          type: integer
+          format: int32
+        timeslots:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/TimeslotApiInfo'
+    TimeslotApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        date:
+          type: string
+          nullable: true
+        unitId:
+          type: integer
+          format: int32
+        intervalStart:
+          type: string
+          nullable: true
+        intervalEnd:
+          type: string
+          nullable: true
+    RoutineApiSearchResult:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        shortName:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        isAvailableOnline:
+          type: boolean
+        groupId:
+          type: integer
+          format: int32
+        groupName:
+          type: string
+          nullable: true
+        topLevelGroupName:
+          type: string
+          nullable: true
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+          nullable: true
+    RoutineApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          nullable: true
+        shortName:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        nameLanguage1:
+          type: string
+          nullable: true
+        nameLanguage2:
+          type: string
+          nullable: true
+        isAvailableOnline:
+          type: boolean
+          description: Marked as available online in DocDream
+        type:
+          description: Routine type
+          oneOf:
+            - $ref: '#/components/schemas/RoutineType'
+        description:
+          type: string
+          nullable: true
+        descriptionLanguage1:
+          type: string
+          nullable: true
+        descriptionLanguage2:
+          type: string
+          nullable: true
+        routineGroupId:
+          type: integer
+          description: Routine group
+          format: int32
+        preparationDescription:
+          type: string
+          nullable: true
+        preparationDescriptionLanguage1:
+          type: string
+          nullable: true
+        preparationDescriptionLanguage2:
+          type: string
+          nullable: true
+        printInPriceList:
+          type: boolean
+          description: Print in price list in DocDream
+        disableAddingAsStandaloneService:
+          type: boolean
+          description: Cannot be added to order separately, only can be used within package service
+        defaultSpecialityId:
+          type: integer
+          description: Default speciality routine is associated with. Most useful for consultations.
+          format: int32
+          nullable: true
+        regularRoutineType:
+          description: Subtype of Regular (clinic) routine
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/RegularRoutineType'
+        encounterLocationType:
+          description: Location type for routine. Most often used for remote consultations (Virtual) or home visits (Home).
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EncounterLocationType'
+        durationSingle:
+          type: integer
+          description: Duration of appointment if routine is the only one
+          format: int32
+          nullable: true
+        durationCombined:
+          type: integer
+          description: If appointment has several routines, it's duration is Max(Sum(DurationCombined),Max(DurationSingle))
+          format: int32
+          nullable: true
+        isProfile:
+          type: boolean
+          description: Is profile (composite laboratory test)
+          nullable: true
+        substanceId:
+          type: integer
+          description: Substance for laboratory test. null for profiles - determine via components
+          format: int32
+          nullable: true
+        containerId:
+          type: integer
+          description: Container for laboratory test. null for profiles - determine via components
+          format: int32
+          nullable: true
+        turnAroundTimeHours:
+          type: integer
+          description: Turn around time (hours) - from sampling to result delivery, as promised to customer
+          format: int32
+          nullable: true
+        intakeRoutineIds:
+          type: array
+          description: Intake routine ids. For profiles, intakes for all component tests are returned.
+          nullable: true
+          items:
+            type: integer
+            format: int32
+        labProfileComponents:
+          type: array
+          description: List of profile components
+          nullable: true
+          items:
+            type: integer
+            format: int32
+        packageComponents:
+          type: array
+          description: List of package components
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ComponentApiInfo'
+        createdOn:
+          type: string
+          format: date-time
+        updatedOn:
+          type: string
+          format: date-time
+          nullable: true
+    RoutineType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - Regular
+        - Lab
+        - Article
+        - Package
+        - HealthPlan
+      enum:
+        - NotDefined
+        - Regular
+        - Lab
+        - Article
+        - Package
+        - HealthPlan
+    RegularRoutineType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - Consultation
+        - Examination
+        - Treatment
+        - Intake
+        - Intervention
+        - Drug
+        - Vaccine
+        - Procedure
+        - Other
+        - HospitalStay
+        - Anaesthesia
+      enum:
+        - NotDefined
+        - Consultation
+        - Examination
+        - Treatment
+        - Intake
+        - Intervention
+        - Drug
+        - Vaccine
+        - Procedure
+        - Other
+        - HospitalStay
+        - Anaesthesia
+    EncounterLocationType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - OnPremises
+        - Home
+        - Field
+        - Virtual
+        - BiomaterialTransfer
+      enum:
+        - NotDefined
+        - OnPremises
+        - Home
+        - Field
+        - Virtual
+        - BiomaterialTransfer
+    ComponentApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        routineId:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+    RoutineGroupApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        nameLanguage1:
+          type: string
+          nullable: true
+        nameLanguage2:
+          type: string
+          nullable: true
+        position:
+          type: integer
+          format: int32
+        childGroups:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/RoutineGroupApiInfo'
+        topLevelGroupId:
+          type: integer
+          format: int32
+          nullable: true
+    UnitApiInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        nameLanguage1:
+          type: string
+          nullable: true
+        nameLanguage2:
+          type: string
+          nullable: true
+        medicalCareType:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/MedicalCareType'
+        address:
+          type: string
+          nullable: true
+        briefAddress:
+          type: string
+          nullable: true
+        licenseInfoForDocuments:
+          type: string
+          nullable: true
+        contactDataForDocuments:
+          type: string
+          nullable: true
+        workingDayStart:
+          type: string
+          format: duration
+        workingDayEnd:
+          type: string
+          format: duration
+        headEmployee:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/EntityApiInfo'
+        email:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+        localPhoneNumber:
+          type: string
+          nullable: true
+        patientInformation:
+          type: string
+          nullable: true
+        chiefPhysician:
+          type: string
+          nullable: true
+        allowPlanning:
+          type: boolean
+    MedicalCareType:
+      type: string
+      description: ''
+      x-enumNames:
+        - NotDefined
+        - OutPatient
+        - InPatient
+        - Operations
+        - BloodDrawingPoint
+      enum:
+        - NotDefined
+        - OutPatient
+        - InPatient
+        - Operations
+        - BloodDrawingPoint
+  securitySchemes:
+    Api-Key:
+      type: apiKey
+      description: Copy DocDream REST API key here
+      name: Api-Key
+      in: header
+security:
+  - Api-Key: []
+tags:
+  - name: Appointments
+  - name: Areas
+  - name: Dictionaries
+  - name: Documents
+  - name: Resources
+  - name: HealthCareInstitutions
+  - name: MedReps
+  - name: Orders
+  - name: Payments
+  - name: Person Accounts
+  - name: Person Channels
+  - name: Persons
+  - name: Person Relations
+  - name: Planning
+  - name: Referring doctors
+  - name: Pricing
+  - name: Promotions
+  - name: Routines
