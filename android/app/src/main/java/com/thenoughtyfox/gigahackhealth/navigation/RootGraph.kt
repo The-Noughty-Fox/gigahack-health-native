@@ -28,7 +28,7 @@ interface RootNavDestinations {
 @Composable
 fun RootGraph(preferenceManager: PreferenceManager) {
     val navController = rememberNavController()
-    val startDestination = RootNavDestinations.Auth
+    val startDestination = RootNavDestinations.OnBoarding
 
     CompositionLocalProvider(LocalRootNavigator provides navController) {
         NavHost(

@@ -17,6 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,11 +32,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.thenoughtyfox.gigahackhealth.R
 import com.thenoughtyfox.gigahackhealth.ui.view.TopBar
+import org.openapitools.client.models.PersonApiInfo
 
 @Composable
-fun ProfilePage() {
+fun ProfilePage(viewModel: ProfileViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsState()
+
     Column(
         Modifier
             .fillMaxSize()
@@ -61,7 +67,7 @@ fun ProfilePage() {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            UserData()
+            UserData(state.person)
 
             Program.entries.forEach {
                 Program(it)
@@ -77,17 +83,17 @@ fun ProfilePage() {
 }
 
 @Composable
-private fun UserData() {
+private fun UserData(person: PersonApiInfo) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White, shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
-        val (name, data, mail, icon) = createRefs()
+        val (name, data, icon) = createRefs()
 
         Text(
-            text = "Serghei Tibulschi",
+            text = person.firstName + " " + person.lastName,
             style = TextStyle(
                 color = Color.Black,
                 fontSize = 16.sp,
@@ -116,34 +122,7 @@ private fun UserData() {
             )
 
             Text(
-                text = "12.12.1990",
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(400)
-                ),
-                modifier = Modifier.padding(start = 8.dp)
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .constrainAs(mail) {
-                    top.linkTo(data.bottom)
-                    start.linkTo(parent.start)
-                },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(R.drawable.ic_mail_blue),
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
-
-            Text(
-                text = "serghei.bravo@gmail.com",
+                text = person.dateOfBirth ?: "",
                 style = TextStyle(
                     color = Color.Black,
                     fontSize = 14.sp,

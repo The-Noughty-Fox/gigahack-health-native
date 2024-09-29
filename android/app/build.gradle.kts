@@ -127,6 +127,13 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp3.logging.interceptor)
 
+    //Image
+    implementation (libs.coil.compose)
+            // compose images
+            implementation (libs.landscapist.coil)
+            // to preview video thumbnail
+            implementation (libs.coil.video)
+
     //Health
     implementation(libs.androidx.connect.client)
 

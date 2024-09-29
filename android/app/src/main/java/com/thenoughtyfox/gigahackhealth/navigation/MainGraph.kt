@@ -1,7 +1,9 @@
 package com.thenoughtyfox.gigahackhealth.navigation
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -14,13 +16,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.thenoughtyfox.gigahackhealth.ui.appointment.AppointmentPage
+import com.thenoughtyfox.gigahackhealth.ui.chat.ChatPage
 import com.thenoughtyfox.gigahackhealth.ui.profile.ProfilePage
+import com.thenoughtyfox.gigahackhealth.ui.profile.ProfileViewModel
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavBar
 import com.thenoughtyfox.gigahackhealth.ui.view.BottomNavData
 import com.thenoughtyfox.gigahackhealth.utils.navigateSingleTop
@@ -105,11 +109,16 @@ fun MainGraph() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
+                        .consumeWindowInsets(padding)
+                        .imePadding()
                 ) {
                     composable<MainNavDestinations.Appointment> { AppointmentGraph() }
                     composable<MainNavDestinations.Home> { }
-                    composable<MainNavDestinations.Chat> { }
-                    composable<MainNavDestinations.Profile> { ProfilePage() }
+                    composable<MainNavDestinations.Chat> { ChatPage() }
+                    composable<MainNavDestinations.Profile> {
+                        val viewModel: ProfileViewModel = hiltViewModel()
+                        ProfilePage(viewModel)
+                    }
                 }
             }
         )

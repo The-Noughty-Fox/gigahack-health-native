@@ -26,6 +26,9 @@ gson = "2.10.1"
 okhttp3-logging-interceptor = "5.0.0-alpha.2"
 noughtyAuthenticationLibAndroid = "0.7"
 constraintlayoutCompose = "1.0.1"
+coilCompose = "2.6.0"
+coilVideo = "2.4.0"
+landscapistCoil = "2.2.1"
 
 [libraries]
 androidx-connect-client = { module = "androidx.health.connect:connect-client", version.ref = "connectClient" }
@@ -66,6 +69,9 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+coil-video = { module = "io.coil-kt:coil-video", version.ref = "coilVideo" }
+landscapist-coil = { module = "com.github.skydoves:landscapist-coil", version.ref = "landscapistCoil" }
 
 noughty-authentication-lib-android = { module = "com.github.The-Noughty-Fox:noughty-authentication-lib-android", version.ref = "noughtyAuthenticationLibAndroid" }
 
